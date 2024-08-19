@@ -6,6 +6,7 @@ import speech_recognition as sr
 import gtts
 import googlesearch
 import bunny_lang
+import pywhatkit
 import asyncio
 
                    
@@ -15,8 +16,20 @@ def speak():
         sound=rec.listen(mic)
         text_rec=rec.recognize_google(sound)
         return text_rec
-
+    
 def text_to_text():
+    if 'out' not in st.session_state:
+      st.session_state['out']=[]
+    if 'History' not in st.session_state:
+      st.session_state['History']=[]
+    with st.sidebar:
+        st.header(":rainbow[History] **🤖**")
+        for i,j in enumerate(st.session_state['History']):
+            @st.dialog(j)
+            def display_hist(i):
+                st.success(st.session_state['out'][i])
+            if st.button(j):
+                display_hist(i)
     api='AIzaSyCBHTmgKXbiputUhfU9PlFUufQYVGqsMHs'
     genai.configure(api_key=api)
     model = genai.GenerativeModel('gemini-pro') 
@@ -48,11 +61,12 @@ def text_to_text():
                 result, _ = await asyncio.gather(genmsg(), spin())
                 return result
             result = asyncio.run(main())
+            st.session_state['History'].append(input_text)
             if result:
                 for i in result:
                     output=i.text
                 output=bunny_lang.trans(output,to)
-                ___='''if 0 and st.button("Send whatshapp") :
+                i__='''f 0 and st.button("Send whatshapp") :
                     ph_no=st.text_input(label="Enter the Phone number:",placeholder=0000000000)
                     if len(ph_no)==10:
                         pywhatkit.whats.sendwhatmsg_instantly("+91"+ph_no,output)'''
@@ -61,8 +75,31 @@ def text_to_text():
                         yield i
                         time.sleep(0.02)
                 st.write_stream(generate)
-                st.header("Relevant video link")
-                st.write(pywhatkit.playonyt(input_text,open_video=False))
+                st.session_state['out'].append(output)     
+                st.header("Relevant video")
+                __='''def get_video_url(query):
+                    try:
+                        link = pywhatkit.playonyt(query, open_video=False)
+                        return link
+                    except Exception as e:
+                        return 
+                try:
+                    video_links = [get_video_url(input_text) for query in '123']
+                    col1, col2, col3 = st.columns(len(video_links))
+                    with col1:
+                        if video_links[0]:
+                            st.video(video_links[0], width=300, height=300)
+                    with col2:
+                        if video_links[1]:
+                            st.video(video_links[1], width=300, height=300)
+                    with col3:
+                        if video_links[2]:
+                            st.video(video_links[2], width=300, height=300)
+                except Exception:
+                  pass'''
+                link=pywhatkit.playonyt(input_text,open_video=False)
+                st.video(link)
+                st.write(link)
                 try:
                     st.markdown("### :red[Links that provide extra content for your text :]")
                     query=input_text
