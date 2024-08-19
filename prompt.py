@@ -6,7 +6,6 @@ import speech_recognition as sr
 import gtts
 import googlesearch
 import bunny_lang
-import pywhatkit
 import asyncio
 
                    
@@ -53,10 +52,10 @@ def text_to_text():
                 for i in result:
                     output=i.text
                 output=bunny_lang.trans(output,to)
-                if 0 and st.button("Send whatshapp") :
+                ___='''if 0 and st.button("Send whatshapp") :
                     ph_no=st.text_input(label="Enter the Phone number:",placeholder=0000000000)
                     if len(ph_no)==10:
-                        pywhatkit.whats.sendwhatmsg_instantly("+91"+ph_no,output)
+                        pywhatkit.whats.sendwhatmsg_instantly("+91"+ph_no,output)'''
                 def generate():
                     for i in output:
                         yield i
