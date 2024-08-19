@@ -1,0 +1,14 @@
+boto3==1.34.148
+face_recog==0.0.1
+googlesearch_python==1.2.3
+googletrans==4.0.0rc1
+gTTS==2.4.0
+mysql_connector_repackaged==0.3.1
+Pillow==10.0.0
+Pillow==10.4.0
+protobuf==3.20.3
+pywhatkit==5.4
+Requests==2.32.3
+SpeechRecognition==3.10.0
+streamlit==1.37.1
+streamlit_option_menu==0.3.13
