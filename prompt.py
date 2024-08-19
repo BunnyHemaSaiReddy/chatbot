@@ -6,7 +6,7 @@ import speech_recognition as sr
 import gtts
 import googlesearch
 import bunny_lang
-import pywhatkit
+import pywhatkit.playonyt as playonyt
 import asyncio
 
                    
@@ -97,7 +97,7 @@ def text_to_text():
                             st.video(video_links[2], width=300, height=300)
                 except Exception:
                   pass'''
-                link=pywhatkit.playonyt(input_text,open_video=False)
+                link=playonyt(input_text,open_video=False)
                 st.video(link)
                 st.write(link)
                 try:
