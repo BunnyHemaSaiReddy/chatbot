@@ -6,9 +6,8 @@ import speech_recognition as sr
 import gtts
 import googlesearch
 import bunny_lang
-from youtubesearchpython import VideosSearch
 import asyncio
-
+from pytube import Search
                    
 def speak():
     rec=sr.Recognizer()
@@ -16,7 +15,13 @@ def speak():
         sound=rec.listen(mic)
         text_rec=rec.recognize_google(sound)
         return text_rec
-    
+
+def fetch_youtube_links(query, num_results=3):
+    search = Search(query)
+    results = search.results
+    video_links = [result.watch_url for result in results[:num_results]]    
+    return video_links
+   
 def text_to_text():
     if 'out' not in st.session_state:
       st.session_state['out']=[]
@@ -30,6 +35,7 @@ def text_to_text():
                 st.success(st.session_state['out'][i])
             if st.button(j):
                 display_hist(i)
+                #chat_c="Text📄"
     api='AIzaSyCBHTmgKXbiputUhfU9PlFUufQYVGqsMHs'
     genai.configure(api_key=api)
     model = genai.GenerativeModel('gemini-pro') 
@@ -47,7 +53,12 @@ def text_to_text():
         
     elif chat_c=='Speak🎤':
         st.markdown("### :violet[Speak now:] 🗣️ ")
-        input_text=st.text_area('**🤖**',value=speak(),disabled=False)
+        try:
+          input_text=st.text_area('**🤖**',value=speak(),disabled=False)
+        except Exception:
+            st.warning("After 3 seconds ,you can try Again.Speak loud..🗣️🗣️")
+            time.sleep(3)
+            st.rerun()
     if st.button("Generate:") and input_text:
         for i in range(1):
             if st.button("cancel"):
@@ -61,12 +72,11 @@ def text_to_text():
                 result, _ = await asyncio.gather(genmsg(), spin())
                 return result
             result = asyncio.run(main())
-            st.session_state['History'].append(input_text)
             if result:
                 for i in result:
                     output=i.text
                 output=bunny_lang.trans(output,to)
-                i__='''f 0 and st.button("Send whatshapp") :
+                __='''if 0 and st.button("Send whatshapp") :
                     ph_no=st.text_input(label="Enter the Phone number:",placeholder=0000000000)
                     if len(ph_no)==10:
                         pywhatkit.whats.sendwhatmsg_instantly("+91"+ph_no,output)'''
@@ -74,35 +84,21 @@ def text_to_text():
                     for i in output:
                         yield i
                         time.sleep(0.02)
+                if input_text not in st.session_state['History']:
+                    st.session_state['History'].append(input_text)
+                    st.session_state['out'].append(output)
                 st.write_stream(generate)
-                st.session_state['out'].append(output)     
-                st.header("Relevant video")
-                __='''def get_video_url(query):
-                    try:
-                        link = pywhatkit.playonyt(query, open_video=False)
-                        return link
-                    except Exception as e:
-                        return 
-                try:
-                    video_links = [get_video_url(input_text) for query in '123']
-                    col1, col2, col3 = st.columns(len(video_links))
-                    with col1:
-                        if video_links[0]:
-                            st.video(video_links[0], width=300, height=300)
-                    with col2:
-                        if video_links[1]:
-                            st.video(video_links[1], width=300, height=300)
-                    with col3:
-                        if video_links[2]:
-                            st.video(video_links[2], width=300, height=300)
-                except Exception:
-                  pass'''
-                #link=playonyt(input_text,open_video=False)
-                videos_search = VideosSearch(search_query, limit=3,language='tl',region='IND')
-                for i in range(3):
-                    video_url = result['result'][i]['link']
-                    st.video(video_url)
-                    st.write(video_url)
+                links = fetch_youtube_links(input_text)
+                st.header("Relevant video link")
+                # for link in links:
+                #     st.write(link)
+                columns = st.columns(len(links))
+                for i, link in enumerate(links):
+                    with columns[i]:
+                        st.video(link)
+                        st.write(link)
+                # st.video(pywhatkit.playonyt(input_text,open_video=False))
+                # st.write(pywhatkit.playonyt(input_text,open_video=False))
                 try:
                     st.markdown("### :red[Links that provide extra content for your text :]")
                     query=input_text
