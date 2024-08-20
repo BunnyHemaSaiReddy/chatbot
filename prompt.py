@@ -6,7 +6,7 @@ import speech_recognition as sr
 import gtts
 import googlesearch
 import bunny_lang
-import pywhatkit.playonyt as playonyt
+from youtubesearchpython import VideosSearch
 import asyncio
 
                    
@@ -97,9 +97,12 @@ def text_to_text():
                             st.video(video_links[2], width=300, height=300)
                 except Exception:
                   pass'''
-                link=playonyt(input_text,open_video=False)
-                st.video(link)
-                st.write(link)
+                #link=playonyt(input_text,open_video=False)
+                videos_search = VideosSearch(search_query, limit=3,language='tl',region='IND')
+                for i in range(3):
+                    video_url = result['result'][i]['link']
+                    st.video(video_url)
+                    st.write(video_url)
                 try:
                     st.markdown("### :red[Links that provide extra content for your text :]")
                     query=input_text
