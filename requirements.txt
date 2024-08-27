@@ -6,6 +6,6 @@ Pillow==10.4.0
 protobuf==3.20.3
 pytube
 Requests==2.32.3
-SpeechRecognition==3.10.0
+SpeechRecognition
 streamlit==1.37.1
 
