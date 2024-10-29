@@ -8,7 +8,8 @@ import googlesearch
 import bunny_lang
 import asyncio
 from pytube import Search
-                   
+import bunny_key as bk
+
 def speak():
     rec=sr.Recognizer()
     with sr.Microphone() as mic:
@@ -36,9 +37,9 @@ def text_to_text():
             if st.button(j):
                 display_hist(i)
                 #chat_c="Text📄"
-    api='AIzaSyCBHTmgKXbiputUhfU9PlFUufQYVGqsMHs'
+    api=bk.api_gem
     genai.configure(api_key=api)
-    model = genai.GenerativeModel('gemini-pro') 
+    model = genai.GenerativeModel('gemini-1.5-flash') 
     st.markdown('## :red[Input type:]')
     chat_c=st.radio("",("Text📄","Speak🎤"))
     dict_lang=bunny_lang.lang()
@@ -83,7 +84,7 @@ def text_to_text():
                 def generate():
                     for i in output:
                         yield i
-                        time.sleep(0.02)
+                        time.sleep(0.01)
                 if input_text not in st.session_state['History']:
                     st.session_state['History'].append(input_text)
                     st.session_state['out'].append(output)
