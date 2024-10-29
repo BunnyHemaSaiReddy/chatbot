@@ -8,4 +8,7 @@ pytube
 Requests==2.32.3
 SpeechRecognition
 streamlit==1.37.1
-
+mysql-connector==2.2.9
+mysql-connector-python==8.0.33
+mysqlclient==2.1.0rc1
+mysql==0.0.3
