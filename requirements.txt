@@ -1,11 +1,11 @@
 googlesearch_python==1.2.3
-googletrans==4.0.0rc1
+deep-translator==1.11.4 
 google-generativeai==0.7.2
 gTTS==2.4.0
 Pillow==10.4.0
 protobuf==3.20.3
 pytube
-Requests==2.32.3
+requests==2.32.3
 SpeechRecognition
 streamlit==1.37.1
 mysql-connector==2.2.9
