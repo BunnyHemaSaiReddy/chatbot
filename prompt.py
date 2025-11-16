@@ -37,9 +37,9 @@ def text_to_text():
             if st.button(j):
                 display_hist(i)
                 #chat_c="Text📄"
-    api=bk.api_gem
+    api="AIzaSyCNDmLZftLXyqEFaghwN-TbIunypdBWH9g"
     genai.configure(api_key=api)
-    model = genai.GenerativeModel('gemini-1.5-flash') 
+    model = genai.GenerativeModel('gemini-2.5-flash') 
     st.markdown('## :red[Input type:]')
     chat_c=st.radio("",("Text📄","Speak🎤"))
     dict_lang=bunny_lang.lang()
@@ -122,3 +122,4 @@ def text_to_text():
                     st.rerun()
 
 text_to_text() 
+
