@@ -4,11 +4,13 @@ import io
 import google.generativeai as genai
 import speech_recognition as sr
 import gtts
-import googlesearch
+#import googlesearch
 import bunny_lang
 import asyncio
 from pytube import Search
 import bunny_key as bk
+from duckduckgo_search import DDGS
+
 
 def speak():
     rec=sr.Recognizer()
@@ -103,9 +105,16 @@ def text_to_text():
                 try:
                     st.markdown("### :red[Links that provide extra content for your text :]")
                     query=input_text
-                    g_s=googlesearch.search(query,num_results=5)
-                    for j in g_s:
-                        st.write(j)
+                    # g_s=googlesearch.search(query,num_results=5)
+                   
+                
+                    with DDGS() as ddgs:
+                        results = ddgs.text(query, max_results=5)
+                        for r in results:
+                            st.write(r["href"])
+
+                    # for j in g_s:
+                    #     st.write(j)
                 except Exception as e:
                     j=str(e)[45:]
                     st.warning(j)
@@ -122,4 +131,5 @@ def text_to_text():
                     st.rerun()
 
 text_to_text() 
+
 
